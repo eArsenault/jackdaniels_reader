@@ -8,7 +8,7 @@ Many workouts prescribed by Jack Daniels can be complicated, often written as a 
 
 ## Next Steps
 
-* Add wider variety of paces
-* Add metric and imperial distances in the same string
+* Add non-integer values for distances
 * Add time-based intervals
 * Can we feed this to a whole table/spreadsheet?
+* Add special "k" character for kilometres
