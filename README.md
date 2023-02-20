@@ -8,7 +8,7 @@ Many workouts prescribed by Jack Daniels can be complicated, often written as a 
 
 ## Next Steps
 
-* Add non-integer values for distances
-* Add time-based intervals
+* Add time-based intervals, total distance as a final metric as well
+* Support for 1T == 5'T conversions? maybe this is a separate function
 * Can we feed this to a whole table/spreadsheet?
-* Add special "k" character for kilometres
+* Automatically generate Garmin workouts?

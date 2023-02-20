@@ -22,6 +22,7 @@ def time_eval(string, paces):
     pace_met, pace_imp = convert_pace(paces)
 
     #check for repeats - this can't handle nested parentheses for now
+    #assume we are using natural numbers of reps
     while "(" in string:
         #find the first pair of parentheses
         o = string.find("(")
@@ -31,17 +32,20 @@ def time_eval(string, paces):
 
         string = string[:o] + (val - 1) * (string[(o+1):c] + " + ") + string[(o+1):c] + string[(c+1):]
 
-    #trim out the 10x, 2x, xcetera
+    #trim out the 10x, 2x, xcetera - no longer needed at this point
     string = re.sub(r'\d+x',"",string)
 
     for step in string.split("+"):
         step = step.strip()
-        dist = int(re.findall(r'\d+', step)[-1])
-        #if dist >= 100, assume distance is metres, else miles
-        if dist < 99:
-            total_time = total_time + dist * pace_imp[step[-1]]
-        else:
+        #finds either a whole number or number plus digit
+        dist = float(re.search(r'(\d+\.\d*)|(\d+)', step)[0])
+        #if dist >= 100, assume distance is metres
+        if dist > 99:
             total_time = total_time + (dist/1000) * pace_met[step[-1]]
+        elif step[-2] == 'k':
+            total_time = total_time + dist * pace_met[step[-1]]
+        else:
+            total_time = total_time + dist * pace_imp[step[-1]]
 
     return total_time
 
@@ -57,4 +61,4 @@ if __name__ == "__main__":
         "sys": "metric"
     }
 
-    print(time_eval("10T", paces))
+    print(time_eval("10.5kT + 2E", paces))
