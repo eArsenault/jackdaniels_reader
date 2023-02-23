@@ -19,6 +19,10 @@ def convert_pace(paces):
 
 def time_eval(string, paces):
     total_time = 0
+    total_distance = 0
+
+    #convert_paces pops out this key, save the value
+    system = paces["sys"]
     pace_met, pace_imp = convert_pace(paces)
 
     #check for repeats - this can't handle nested parentheses for now
@@ -42,12 +46,19 @@ def time_eval(string, paces):
         #if dist >= 100, assume distance is metres
         if dist > 99:
             total_time = total_time + (dist/1000) * pace_met[step[-1]]
-        elif step[-2] == 'k':
+            total_distance = total_distance + (dist/1000)
+        elif step[-2] == "k":
             total_time = total_time + dist * pace_met[step[-1]]
+            total_distance = total_distance + dist
+        elif step[-2] == "'":
+            dur = dist
+            total_time = total_time + dur
+            total_distance = total_distance + dur / pace_met[step[-1]]
         else:
             total_time = total_time + dist * pace_imp[step[-1]]
+            total_distance = total_distance + 1.609 * dist
 
-    return total_time
+    return total_time, total_distance if system == "metric" else total_distance / 1.609
 
 if __name__ == "__main__":
     #use my paces for now
@@ -61,4 +72,4 @@ if __name__ == "__main__":
         "sys": "metric"
     }
 
-    print(time_eval("10.5kT + 2E", paces))
+    print(time_eval("10kT + 16'T", paces))
