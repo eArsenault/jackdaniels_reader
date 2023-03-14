@@ -1,9 +1,11 @@
 import re
+import csv
 
 def convert_pace(paces):
-    system = paces.pop("sys")
+    system = paces["sys"]
+    paces_value = dict(paces)
+    paces_value.pop("sys")
 
-    paces_value = paces
     for k, time in paces_value.items():
         time_min, time_sec = time.split(":")
         paces_value[k] = float(time_min) + float(time_sec)/60
@@ -21,7 +23,6 @@ def time_eval(string, paces):
     total_time = 0
     total_distance = 0
 
-    #convert_paces pops out this key, save the value
     system = paces["sys"]
     pace_met, pace_imp = convert_pace(paces)
 
@@ -58,7 +59,15 @@ def time_eval(string, paces):
             total_time = total_time + dist * pace_imp[step[-1]]
             total_distance = total_distance + 1.609 * dist
 
-    return total_time, total_distance if system == "metric" else total_distance / 1.609
+    return [total_time, total_distance if system == "metric" else total_distance / 1.609]
+
+def eval_list(list_wo, paces):
+    list_out = []
+
+    for string in list_wo:
+        list_out.append([string] + time_eval(string, paces))
+    
+    return list_out
 
 if __name__ == "__main__":
     #use my paces for now
@@ -72,4 +81,5 @@ if __name__ == "__main__":
         "sys": "metric"
     }
 
-    print(time_eval("10kT + 16'T", paces))
+    #print(time_eval("10kT + 16'T", paces))
+    print(eval_list(["10kT + 16'T", "10kT + 16'T"], paces))

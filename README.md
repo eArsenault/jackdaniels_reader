@@ -9,6 +9,5 @@ Many workouts prescribed by Jack Daniels can be complicated, often written as a 
 ## Next Steps
 
 * Support for 1T == 5'T conversions? maybe this is a separate function
-* Can we feed this to a whole table/spreadsheet?
-* Automatically generate Garmin workouts?
+* Automatically generate Garmin workouts? (look into FIT SDK)
 * Documentation on format of running code?
